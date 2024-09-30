@@ -22,7 +22,13 @@ func main() {
 	productUsecase := usecase.NewProductUsecase(cfg)
 	productHandler := delivery.NewProductHandler(productUsecase)
 
-	router := router.NewRouter(userHandler, shopHandler, productHandler)
+	warehouseUsecase := usecase.NewWarehouseUsecase(cfg)
+	warehouseHandler := delivery.NewWarehouseHandler(warehouseUsecase)
+
+	orderUsecase := usecase.NewOrderUsecase(cfg)
+	orderHandler := delivery.NewOrderHandler(orderUsecase)
+
+	router := router.NewRouter(userHandler, shopHandler, productHandler, warehouseHandler, orderHandler)
 
 	router.Run(":" + cfg.AppPort)
 }

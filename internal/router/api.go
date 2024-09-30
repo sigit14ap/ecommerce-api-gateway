@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewRouter(userHandler *delivery.UserHandler, shopHandler *delivery.ShopHandler, productHandler *delivery.ProductHandler) *gin.Engine {
+func NewRouter(userHandler *delivery.UserHandler, shopHandler *delivery.ShopHandler, productHandler *delivery.ProductHandler, warehouseHandler *delivery.WarehouseHandler, orderHandler *delivery.OrderHandler) *gin.Engine {
 	router := gin.New()
 	v1 := router.Group("/api/v1")
 
@@ -33,6 +33,20 @@ func NewRouter(userHandler *delivery.UserHandler, shopHandler *delivery.ShopHand
 		productsGroup.GET("/shop/products/:id", productHandler.GetByIDAndShopID)
 		productsGroup.PUT("/shop/products/:id", productHandler.Update)
 		productsGroup.DELETE("/shop/products/:id", productHandler.Delete)
+	}
+
+	warehouseGroup := v1.Group("/warehouses")
+	{
+		warehouseGroup.GET("/", warehouseHandler.GetAllWarehouses)
+		warehouseGroup.PATCH("/:id/status", warehouseHandler.SetWarehouseStatus)
+		warehouseGroup.GET("/stocks/warehouse/:id", warehouseHandler.GetStocksByWarehouseID)
+		warehouseGroup.POST("/stocks/send-stock", warehouseHandler.SendStock)
+		warehouseGroup.POST("/stocks/transfer-stock", warehouseHandler.TransferStock)
+	}
+
+	orderGroup := v1.Group("/orders")
+	{
+		orderGroup.POST("/checkout", orderHandler.Checkout)
 	}
 
 	return router
