@@ -7,6 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sigit14ap/api-gateway/internal/repository/api"
 	"github.com/sigit14ap/api-gateway/internal/usecase"
+	"github.com/sigit14ap/api-gateway/pkg/logger"
+	"github.com/sirupsen/logrus"
 )
 
 type OrderHandler struct {
@@ -49,9 +51,11 @@ func (handler *OrderHandler) Checkout(context *gin.Context) {
 
 	select {
 	case response := <-responseChan:
+		logger.Info("Checkout Order", logrus.Fields{"status": response.StatusCode})
 		context.JSON(response.StatusCode, response.Body)
 
 	case err := <-errChan:
+		logger.Error("Failed Checkout Order", nil)
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
 }
