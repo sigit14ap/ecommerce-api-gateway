@@ -2,8 +2,10 @@ package handler
 
 import (
 	"net/http"
+	"sync"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sigit14ap/api-gateway/internal/repository/api"
 	"github.com/sigit14ap/api-gateway/internal/usecase"
 )
 
@@ -23,11 +25,33 @@ func (handler *OrderHandler) Checkout(context *gin.Context) {
 		return
 	}
 
-	response, err := handler.orderUsecase.Checkout(headers, payload)
-	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
+	responseChan := make(chan *api.ApiClientResponse)
+	errChan := make(chan error)
 
-	context.JSON(response.StatusCode, response.Body)
+	var wg sync.WaitGroup
+	wg.Add(1)
+
+	go func() {
+		defer wg.Done()
+		response, err := handler.orderUsecase.Checkout(headers, payload)
+		if err != nil {
+			errChan <- err
+			return
+		}
+		responseChan <- response
+	}()
+
+	go func() {
+		wg.Wait()
+		close(responseChan)
+		close(errChan)
+	}()
+
+	select {
+	case response := <-responseChan:
+		context.JSON(response.StatusCode, response.Body)
+
+	case err := <-errChan:
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	}
 }
