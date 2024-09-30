@@ -26,7 +26,7 @@ func NewClient(baseURL string, serviceToken string) *ApiCLient {
 	}
 }
 
-func (c *ApiCLient) doRequest(method, path string, headers http.Header, payload interface{}) (*ApiClientResponse, error) {
+func (c *ApiCLient) DoRequest(method, path string, headers http.Header, payload interface{}) (*ApiClientResponse, error) {
 	var jsonData []byte
 	var err error
 	if payload != nil {
@@ -74,21 +74,21 @@ func (c *ApiCLient) doRequest(method, path string, headers http.Header, payload 
 }
 
 func (c *ApiCLient) Get(endpoint string, headers http.Header) (*ApiClientResponse, error) {
-	return c.doRequest(http.MethodGet, endpoint, headers, nil)
+	return c.DoRequest(http.MethodGet, endpoint, headers, nil)
 }
 
 func (c *ApiCLient) Post(endpoint string, headers http.Header, payload interface{}) (*ApiClientResponse, error) {
-	return c.doRequest(http.MethodPost, endpoint, headers, payload)
+	return c.DoRequest(http.MethodPost, endpoint, headers, payload)
 }
 
 func (c *ApiCLient) Put(endpoint string, headers http.Header, payload interface{}) (*ApiClientResponse, error) {
-	return c.doRequest(http.MethodPut, endpoint, headers, payload)
+	return c.DoRequest(http.MethodPut, endpoint, headers, payload)
 }
 
 func (c *ApiCLient) Patch(endpoint string, headers http.Header, payload interface{}) (*ApiClientResponse, error) {
-	return c.doRequest(http.MethodPatch, endpoint, headers, payload)
+	return c.DoRequest(http.MethodPatch, endpoint, headers, payload)
 }
 
 func (c *ApiCLient) Delete(endpoint string, headers http.Header) (*ApiClientResponse, error) {
-	return c.doRequest(http.MethodDelete, endpoint, headers, nil)
+	return c.DoRequest(http.MethodDelete, endpoint, headers, nil)
 }
