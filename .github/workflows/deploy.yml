@@ -13,6 +13,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Create .env file
+      run: |
+        echo "APP_PORT=${{ secrets.APP_PORT }}" >> .env
+        echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> .env
+        echo "LOG_LEVEL=${{ secrets.LOG_LEVEL }}" >> .env
+        echo "USER_SERVICE_BASE_URL=${{ secrets.USER_SERVICE_BASE_URL }}" >> .env
+        echo "SHOP_SERVICE_BASE_URL=${{ secrets.SHOP_SERVICE_BASE_URL }}" >> .env
+        echo "PRODUCT_SERVICE_BASE_URL=${{ secrets.PRODUCT_SERVICE_BASE_URL }}" >> .env
+        echo "WAREHOUSE_SERVICE_BASE_URL=${{ secrets.WAREHOUSE_SERVICE_BASE_URL }}" >> .env
+        echo "ORDER_SERVICE_BASE_URL=${{ secrets.ORDER_SERVICE_BASE_URL }}" >> .env
+
     - name: Set up Google Cloud authentication
       uses: google-github-actions/auth@v1
       with:
