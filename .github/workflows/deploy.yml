@@ -29,11 +29,13 @@ jobs:
       with:
         credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v1
-      with:
-        project_id: cloud-devops-learn
-        service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+    - name: Set up Google Cloud authentication
+      env:
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+      run: |
+        echo "$GOOGLE_APPLICATION_CREDENTIALS" > $HOME/gcp-key.json
+        gcloud auth activate-service-account --key-file=$HOME/gcp-key.json
+        gcloud config set project cloud-devops-learn
 
     - name: Build Docker image
       run: |
