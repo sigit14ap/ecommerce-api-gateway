@@ -15,6 +15,8 @@ COPY --from=builder /api-gateway .
 
 COPY .env .
 
-EXPOSE 7000
+#EXPOSE 7000
+# Cloud Run expects the app to listen on port 8080
+EXPOSE 8080
 
 CMD ["./api-gateway"]
