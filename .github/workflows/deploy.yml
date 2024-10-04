@@ -9,6 +9,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      APP_PORT: ${{ secrets.APP_PORT }}
+      APP_SECRET: ${{ secrets.APP_SECRET }}
+      LOG_LEVEL: ${{ secrets.LOG_LEVEL }}
+      USER_SERVICE_BASE_URL: ${{ secrets.USER_SERVICE_BASE_URL }}
+      SHOP_SERVICE_BASE_URL: ${{ secrets.SHOP_SERVICE_BASE_URL }}
+      PRODUCT_SERVICE_BASE_URL: ${{ secrets.PRODUCT_SERVICE_BASE_URL }}
+      WAREHOUSE_SERVICE_BASE_URL: ${{ secrets.WAREHOUSE_SERVICE_BASE_URL }}
+      ORDER_SERVICE_BASE_URL: ${{ secrets.ORDER_SERVICE_BASE_URL }}
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
