@@ -62,10 +62,27 @@ jobs:
     # - name: Run Integration Tests
     #   run:  go test ./tests/integrations/...
 
-    - name: Deploy to Cloud Run
+    # - name: Deploy to Cloud Run
+    #   run: |
+    #     gcloud run deploy api-gateway \
+    #       --image asia-southeast2-docker.pkg.dev/cloud-devops-learn/ecommerce-microservices-repo/api-gateway:$GITHUB_SHA \
+    #       --platform managed \
+    #       --region asia-southeast2 \
+    #       --allow-unauthenticated
+    - name: Get GKE cluster credentials
       run: |
-        gcloud run deploy api-gateway \
-          --image asia-southeast2-docker.pkg.dev/cloud-devops-learn/ecommerce-microservices-repo/api-gateway:$GITHUB_SHA \
-          --platform managed \
-          --region asia-southeast2 \
-          --allow-unauthenticated
+        gcloud container clusters get-credentials cluster-1 \
+          --zone asia-southeast2-a \
+          --project cloud-devops-learn
+
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v3
+
+    - name: Deploy to GKE
+      run: |
+        kubectl apply -f k8s/api-gateway-deployment.yaml
+
+    - name: Check Deployment Status
+      run: |
+        kubectl rollout status deployment/api-gateway-deployment
+
