@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: api-gateway
-          image: asia-southeast2-docker.pkg.dev/YOUR_PROJECT_ID/ecommerce-microservices-repo/api-gateway:latest
+          image: asia-southeast2-docker.pkg.dev/cloud-devops-learn/ecommerce-microservices-repo/api-gateway:latest
           ports:
             - containerPort: 8080
