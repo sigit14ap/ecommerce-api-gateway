@@ -34,6 +34,12 @@ jobs:
         echo "WAREHOUSE_SERVICE_BASE_URL=${{ env.WAREHOUSE_SERVICE_BASE_URL }}" >> .env
         echo "ORDER_SERVICE_BASE_URL=${{ env.ORDER_SERVICE_BASE_URL }}" >> .env
 
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        project_id: cloud-devops-learn
+        service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
     - name: Set up Google Cloud authentication
       uses: google-github-actions/auth@v1
       with:
