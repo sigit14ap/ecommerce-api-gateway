@@ -81,12 +81,6 @@ jobs:
           --zone asia-southeast2-a \
           --project cloud-devops-learn
 
-    - name: Install gke-gcloud-auth-plugin
-      run: |
-        echo "Installing gke-gcloud-auth-plugin..."
-        sudo apt-get update
-        sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
-
     - name: Set up kubectl
       uses: azure/setup-kubectl@v3
 
